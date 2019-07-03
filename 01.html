@@ -1,38 +1,37 @@
 <html>
 <head>
-    <title>My first Three.js app</title>
+    <title></title>
     <style>
-        body { margin: 0; }
-        canvas { width: 100%; height: 100% }
+        * {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
-<script src="//wow.techbrood.com/libs/three.r73.js"></script>
+<script src="js/three.js"></script>
 <script>
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-
-    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    var cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
-
-    camera.position.z = 5;
-
-    var render = function () {
-        requestAnimationFrame( render );
-
-        cube.rotation.x += 0.1;
-        cube.rotation.y += 0.1;
-
+    var scene = new THREE.Scene();  //场景
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 2, 1000);  //透视相机
+    var renderer = new THREE.WebGLRenderer();  //渲染器
+    renderer.setClearColor('#ffffff');  //渲染器的背景颜色
+    renderer.setSize(window.innerWidth, window.innerHeight);  //设置渲染器的大小
+    document.body.appendChild(renderer.domElement);
+    var geometry = new THREE.CubeGeometry(2, 2, 2);  //添加物体到场景中（2米的立方体）
+    var material = new THREE.MeshBasicMaterial({color: 0xff0000});  //定义材质
+    var mesh = new THREE.Mesh(geometry, material);  //网格
+    scene.add(mesh);
+    camera.position.z = 5;  //视觉距离：5米
+    function myRender(cyclic) {
+        //mesh.rotation.x += 0.1;
+        mesh.rotation.y += 0.1;
+        //mesh.rotation.z += 0.1;
+        if (cyclic) {
+            requestAnimationFrame(myRender);  //实现循环
+        }
         renderer.render(scene, camera);
-    };
-
-    render();
+    }
+    setInterval(myRender, 50);  //myRender(true); 
 </script>
 </body>
 </html>
