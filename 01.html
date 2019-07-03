@@ -1,10 +1,15 @@
-<html>
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <title></title>
+    <title>旋转的正方体</title>
     <style>
         * {
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            overflow: hidden;
         }
     </style>
 </head>
@@ -31,7 +36,7 @@
         }
         renderer.render(scene, camera);
     }
-    setInterval(myRender, 50);  //myRender(true); 
+    setInterval(myRender, 50);  //myRender(true);
 </script>
 </body>
 </html>
