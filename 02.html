@@ -81,7 +81,7 @@
 
     var renderer;
     function initThree() {
-        width = document.getElementById('canvas-frame').clientWidth;
+        width = document.getElementById('canvas-frame').clientWidth || window.innerWidth;
         height = document.getElementById('canvas-frame').clientHeight || 600;
         renderer = new THREE.WebGLRenderer({
             antialias: true
