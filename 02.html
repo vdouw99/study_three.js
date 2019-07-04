@@ -26,6 +26,7 @@
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth || window.innerWidth;
     var height = container.clientHeight || 600;
+
     function initRenderer() {
         renderer = new THREE.WebGLRenderer({  //渲染器
             antialias: true  //更平滑，锯齿不明显
@@ -53,10 +54,11 @@
     }
 
     function initMesh() {
-        var geometry = new THREE.Geometry();
-        var material = new THREE.LineBasicMaterial({vertexColors: THREE.VertexColors});
-        var color1 = new THREE.Color(0x444444), color2 = new THREE.Color(0xFF0000);
-        var p1 = new THREE.Vector3(-100, 0, 100);
+        var geometry = new THREE.Geometry();  //添加物体到场景中
+        var material = new THREE.LineBasicMaterial({vertexColors: THREE.VertexColors});  //定义材质
+        var color1 = new THREE.Color(0x444444);
+        var color2 = new THREE.Color(0xFF0000);
+        var p1 = new THREE.Vector3(-100, 0, 100);  //点
         var p2 = new THREE.Vector3(100, 0, -100);
         geometry.vertices.push(p1);
         geometry.vertices.push(p2);
@@ -82,8 +84,7 @@
     window.onload = function () {
         start();
     }
-
-
+    
 </script>
 
 
