@@ -20,7 +20,7 @@
 <script>
     var renderer;  //渲染器
     var camera;  //透视相机
-    var scene = new THREE.Scene();  //场景
+    var scene;  //场景
     var light;
     var mesh;  //网格
     var container = document.getElementById('canvas-frame');
@@ -45,6 +45,10 @@
         camera.up.y = 0;
         camera.up.z = 1;
         camera.lookAt(0, 0, 0);
+    }
+
+    function initScene() {
+        scene = new THREE.Scene();
     }
 
     function initLight() {
@@ -76,6 +80,7 @@
     function start() {
         initRenderer();
         initCamera();
+        initScene();
         initLight();
         initMesh();
         render();
@@ -84,7 +89,7 @@
     window.onload = function () {
         start();
     }
-    
+
 </script>
 
 
