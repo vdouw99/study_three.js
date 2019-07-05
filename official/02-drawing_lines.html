@@ -31,6 +31,7 @@
     }
     function initScene() {
         scene = new THREE.Scene();
+        scene.add(new THREE.AxisHelper(30));  //辅助座标线
     }
     function initMesh() {
         var material = new THREE.LineBasicMaterial({color: 0xff00ff});
@@ -44,8 +45,8 @@
     function render() {
         renderer.clear();
         renderer.render(scene, camera);
-//        mesh.rotation.y += 0.05;
-//        requestAnimationFrame(render);
+        //mesh.rotation.y += 0.05;
+        //requestAnimationFrame(render);
     }
     function start() {
         initRenderer();
