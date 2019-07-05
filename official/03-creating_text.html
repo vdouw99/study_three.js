@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<script src="../js/three.js"></script>
+<script src="../js/webgl.js"></script>
+<div class="container"></div>
+<script>
+    var renderer;
+    var camera;
+    var scene;
+    var mesh;
+    function initRenderer() {
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor('#f9f9f9');
+        document.body.appendChild(renderer.domElement);
+    }
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 100);
+        camera.lookAt(0, 0, 0);
+    }
+    function initScene() {
+        scene = new THREE.Scene();
+        scene.add(new THREE.AxisHelper(30));  //辅助座标线
+    }
+    function initMesh() {
+        var material = new THREE.LineBasicMaterial({color: 0xff00ff});
+        var geometry = new THREE.TextGeometry('Zhang', {
+            font: 'yahei',
+            size: 70,
+            height: 20,
+            curveSegments: 4,
+            bevelThickness: 2,
+            bevelSize: 1.5,
+            bevelEnabled: true
+        });
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+    }
+    function render() {
+        renderer.clear();
+        renderer.render(scene, camera);
+        //mesh.rotation.y += 0.05;
+        //requestAnimationFrame(render);
+    }
+    function start() {
+        initRenderer();
+        initCamera();
+        initScene();
+        initMesh();
+        render();
+    }
+
+    window.onload = function () {
+        if (WEBGL.isWebGLAvailable()) {
+            start();
+        } else {
+            document.body.appendChild(WEBGL.getWebGLErrorMessage());
+        }
+    }
+</script>
+</body>
+</html>
