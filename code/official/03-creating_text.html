@@ -10,8 +10,8 @@
     </style>
 </head>
 <body>
-<script src="../public/js/three.js"></script>
-<script src="../public/js/webgl.js"></script>
+<script src="../../public/js/three.js"></script>
+<script src="../../public/js/webgl.js"></script>
 <div class="container"></div>
 <script>
     var renderer;
@@ -33,14 +33,30 @@
         scene = new THREE.Scene();
         scene.add(new THREE.AxisHelper(30));  //辅助座标线
     }
-    function initMesh() {
-        var material = new THREE.LineBasicMaterial({color: 0xff00ff});
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
-        geometry.vertices.push(new THREE.Vector3(0, 10, 0));
-        geometry.vertices.push(new THREE.Vector3(10, 0, 0));
-        mesh = new THREE.Line(geometry, material);
-        scene.add(mesh);
+    function initMesh(callback) {
+        var loader = new THREE.FontLoader();
+        loader.load('../../public/fonts/helvetiker_bold.typeface.json', function (font) {
+                var material = new THREE.LineBasicMaterial({color: 0xff0000});
+                var geometry = new THREE.TextGeometry('Zhang', {
+                    font: font,
+                    size: 5,
+                    height: 10,
+                    curveSegments: 4,
+                    bevelThickness: 2,
+                    bevelSize: 1.5,
+                    bevelEnabled: true
+                });
+                mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+                callback && callback();
+            },
+            function (xhr) {  // onProgress回调
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            },
+            function (err) {  // onError回调
+                console.log('An error happened');
+            }
+        );
     }
     function render() {
         renderer.clear();
@@ -52,8 +68,9 @@
         initRenderer();
         initCamera();
         initScene();
-        initMesh();
-        render();
+        initMesh(function () {
+            render();
+        });
     }
 
     window.onload = function () {
