@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>画一条直线</title>
+    <script src="../public/js/three.js" data-ke-src="js/three.js"></script>
+    <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
+</head>
+<body>
+<div id="canvas-frame"></div>
+<script>
+    var renderer;  //渲染器
+    var camera;  //透视相机
+    var scene;  //场景
+    var light;
+    var mesh;  //网格
+    var container = document.getElementById('canvas-frame');
+    var width = container.clientWidth || window.innerWidth;
+    var height = container.clientHeight || 600;
+
+    function initRenderer() {
+        renderer = new THREE.WebGLRenderer({  //渲染器
+            antialias: true  //更平滑，锯齿不明显
+        });
+        renderer.setClearColor('#eeeeee');  //渲染器的背景颜色
+        renderer.setSize(width, height);  //设置渲染器的大小
+        container.appendChild(renderer.domElement);
+    }
+
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+        camera.position.x = 0;  //相机的位置
+        camera.position.y = 1000;
+        camera.position.z = 0;
+        //camera.up.x = 0;  //仰视
+        camera.up.y = 1;  //正视  //camera.up.set(0, 1, 0);
+        //camera.up.z = 0;  //俯视
+        camera.lookAt(0, 0, 0);  //相机望向某处
+    }
+
+    function initScene() {
+        scene = new THREE.Scene();
+        scene.add(new THREE.AxisHelper(400));  //辅助座标线
+    }
+
+    function initLight() {
+        light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
+        light.position.set(100, 100, 200);
+        scene.add(light);
+    }
+
+    function initMesh() {
+        var geometry = new THREE.Geometry();  //添加物体到场景中
+        var material = new THREE.LineBasicMaterial({vertexColors: THREE.VertexColors});  //定义材质
+        var color1 = new THREE.Color(0x444444);
+        var color2 = new THREE.Color(0xFF0000);
+        var p1 = new THREE.Vector3(-100, 0, 100);  //点
+        var p2 = new THREE.Vector3(100, 0, -100);
+        geometry.vertices.push(p1);
+        geometry.vertices.push(p2);
+        geometry.colors.push(color1, color2);
+        mesh = new THREE.Line(geometry, material, THREE.LineSegments);
+        scene.add(mesh);
+    }
+
+    function render() {
+        renderer.clear();
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+    }
+
+    function start() {
+        initRenderer();
+        initCamera();
+        initScene();
+        initLight();
+        initMesh();
+        render();
+    }
+
+    window.onload = function () {
+        start();
+    }
+
+</script>
+
+
+</body>
+</html>
