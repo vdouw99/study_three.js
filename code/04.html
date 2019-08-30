@@ -73,7 +73,7 @@
 
     function render(isAnimation) {
         renderer.clear();
-        mesh.rotation.y += 0.1;
+        mesh.rotation.y += 0.1;  //圆周率加0.1
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
