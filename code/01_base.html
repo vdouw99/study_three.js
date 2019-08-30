@@ -59,7 +59,7 @@
     }
 
     function initMesh() {
-        var geometry = new THREE.CubeGeometry(2, 2, 2);  //添加物体到场景中（2米的立方体）
+        var geometry = new THREE.BoxGeometry(2, 2, 2);  //添加物体到场景中（2米的立方体）
         var material = new THREE.MeshBasicMaterial({color: 0xFF0000});  //定义材质
         mesh = new THREE.Mesh(geometry, material);  //网格
         scene.add(mesh);
