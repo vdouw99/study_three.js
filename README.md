@@ -12,7 +12,7 @@ https://www.techbrood.com/threejs/docs/
 W3Cschool
 https://www.w3cschool.cn/webgl/
 
-使用stats.js库显示帧数（以及画面渲染时间）
+使用stats.js库监控three.js（帧数、每帧渲染时间、内存使用量）
 https://github.com/mrdoob/stats.js
 http://www.hangge.com/blog/cache/detail_1784.html
 
