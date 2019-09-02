@@ -6,7 +6,6 @@
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
-    <script src="../public/js/stats.js"></script>
     <style>
         #canvas-frame {
             width: 100%;
@@ -23,7 +22,6 @@
     var scene;
     var light;
     var mesh;
-    var stats = initStats();
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
@@ -68,24 +66,11 @@
     }
 
     function render(isAnimation) {
-        stats.begin();
         renderer.clear();
         mesh.rotation.y += 0.1;  //改变物体的位置
         //camera.position.x += 0.1;  //相机动起来，也可以实现动画
         isAnimation && requestAnimationFrame(render);  //实现循环，刷新频率来自电脑本身，更流畅
         renderer.render(scene, camera);
-        stats.end();
-    }
-
-    //初始化统计对象
-    function initStats() {
-        var stats = new Stats();
-        stats.setMode(0); // 0: fps, 1: ms
-        stats.domElement.style.position = 'fixed';
-        stats.domElement.style.right = '0';
-        stats.domElement.style.bottom = '0';
-        document.body.appendChild(stats.domElement);
-        return stats;
     }
 
     function start() {

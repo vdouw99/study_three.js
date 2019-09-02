@@ -16,6 +16,10 @@ https://www.w3cschool.cn/webgl/
 https://github.com/mrdoob/stats.js
 http://www.hangge.com/blog/cache/detail_1784.html
 
+H5补间动画库Tween.js
+http://www.createjs.cc/
+https://github.com/CreateJS/TweenJS
+
 
 The goal of this section is to give a brief introduction to three.js. We will start by setting up a scene, with a spinning cube. A working example is provided at the bottom of the page in case you get stuck and need help.
 

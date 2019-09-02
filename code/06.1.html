@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>点、线</title>
+    <title>使用stats.js库监控three.js</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
+    <script src="../public/js/stats.js"></script>
     <style>
         #canvas-frame {
             width: 100%;
@@ -20,7 +21,9 @@
     var renderer;
     var camera;
     var scene;
+    var light;
     var mesh;
+    var stats = initStats();
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
@@ -39,7 +42,7 @@
         //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
         camera.position.x = 0;  //视觉距离
         camera.position.y = 0;
-        camera.position.z = 30;
+        camera.position.z = 5;
         camera.up.x = 0;  //仰视
         camera.up.y = 0;  //正视  //camera.up.set(0, 1, 0);
         camera.up.z = 0;  //俯视
@@ -51,39 +54,48 @@
         scene.add(new THREE.AxesHelper(4));  //辅助座标线
     }
 
+    function initLight() {
+        light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
+        light.position.set(100, 100, 200);
+        scene.add(light);
+    }
+
     function initMesh() {
-        var geometry = new THREE.Geometry();  //添加物体到场景中
-        var material = new THREE.LineBasicMaterial({
-            vertexColors: THREE.VertexColors,
-            color: 0xff0000,
-        });
-        var color1 = new THREE.Color(0xffffff);
-        var color2 = new THREE.Color(0xFF0000);
-        var color3 = new THREE.Color(0x00ff00);
-        var p1 = new THREE.Vector3(0, 0, 0);  //点
-        var p2 = new THREE.Vector3(4, 1, 1);
-        var p3 = new THREE.Vector3(3, 7, 6);
-        geometry.vertices.push(p1);
-        geometry.vertices.push(p2);
-        geometry.vertices.push(p3);
-        geometry.colors.push(color1, color2, color3);
-        mesh = new THREE.LineLoop(geometry, material);
+        var geometry = new THREE.BoxGeometry(2, 2, 2);  //添加物体到场景中（2米的立方体）
+        var material = new THREE.MeshBasicMaterial({color: 0xFF0000});  //定义材质
+        mesh = new THREE.Mesh(geometry, material);  //网格
         scene.add(mesh);
     }
 
     function render(isAnimation) {
+        stats.begin();
         renderer.clear();
-        mesh.rotation.y += 0.1;  //圆周率加0.1
-        isAnimation && requestAnimationFrame(render);
+        mesh.rotation.y += 0.1;  //改变物体的位置
+        //camera.position.x += 0.1;  //相机动起来，也可以实现动画
+        isAnimation && requestAnimationFrame(render);  //实现循环，刷新频率来自电脑本身，更流畅
         renderer.render(scene, camera);
+        stats.end();
+    }
+
+    //初始化统计对象
+    function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        stats.domElement.style.position = 'fixed';
+        stats.domElement.style.right = '0';
+        stats.domElement.style.bottom = '0';
+        document.body.appendChild(stats.domElement);
+        return stats;
     }
 
     function start() {
         initRenderer();
         initCamera();
         initScene();
+        initLight();
         initMesh();
-        render();
+        render(true);  //动画方式1
+        //setInterval(render, 50);  //动画方式2，自定义设置刷新频率
     }
 
     window.onload = function () {
