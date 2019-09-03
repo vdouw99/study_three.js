@@ -20,6 +20,16 @@ H5补间动画库Tween.js
 http://www.createjs.cc/
 https://github.com/CreateJS/TweenJS
 
+实现图形控制界面->dat.gui.js
+使用说明-》https://www.hangge.com/blog/cache/detail_1785.html
+github-》https://github.com/dataarts/dat.gui
+
+three.js学习笔记 dat.gui.js和stats.js
+dat.gui.js用于创建菜单栏，可以用来控制场景中的各个参数来调试场景。
+stats.js用于对JavaScript进行性能检测。
+https://blog.csdn.net/u014658748/article/details/51780727
+
+
 
 The goal of this section is to give a brief introduction to three.js. We will start by setting up a scene, with a spinning cube. A working example is provided at the bottom of the page in case you get stuck and need help.
 
