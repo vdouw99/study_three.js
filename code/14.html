@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>五彩的光源-1-平行光（方向光）</title>
+    <title>五彩的光源-2-环境光</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
@@ -54,7 +54,9 @@
     }
 
     function initLight() {
-        light = new THREE.AmbientLight(0xffffff, 1.0, 0);  //环境光
+        console.log('没有任何光的时候，物体都是黑色的');
+        light = new THREE.DirectionalLight(0xffffff, 1.0, 0);  //环境光
+        console.log('改变环境光的位置，对物体有影响吗？没有！');
         light.position.set(param.lightX, param.lightY, param.lightZ);
         scene.add(light);
     }
