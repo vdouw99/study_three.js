@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>五彩的光源</title>
+    <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
+    <script src="../public/js/webgl.js"></script>
+    <script src="../public/js/three.js"></script>
+    <script src="../public/js/dat.gui.js"></script>
+    <style>
+        #canvas-frame {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="canvas-frame"></div>
+
+<script>
+    var renderer;
+    var camera;
+    var scene;
+    var light;
+    var mesh;
+    var container = document.getElementById('canvas-frame');
+    var width = container.clientWidth;
+    var height = container.clientHeight;
+
+    function initRenderer() {
+        renderer = new THREE.WebGLRenderer({  //渲染器
+            antialias: true  //更平滑，锯齿不明显
+        });
+        renderer.setClearColor('#ffffff');
+        renderer.setSize(width, height);
+        container.appendChild(renderer.domElement);
+    }
+
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
+        //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
+        camera.position.x = 300;  //视觉距离
+        camera.position.y = 0;
+        camera.position.z = 300;
+        camera.up.x = 0;  //仰视
+        camera.up.y = 1;  //正视  //camera.up.set(0, 1, 0);
+        camera.up.z = 0;  //俯视
+        camera.lookAt(0, 0, 1);  //相机望向某处
+    }
+
+    function initScene() {
+        scene = new THREE.Scene();
+        scene.add(new THREE.AxesHelper(400));  //辅助座标线
+    }
+
+    function initLight() {
+        console.log('没有任何光的时候，物体都是黑色的');
+        light = new THREE.DirectionalLight(0xffffff, 1.0, 0);  //环境光
+        console.log('改变环境光的位置，对物体有影响吗？没有！');
+        light.position.set(100, 100, 200);
+        scene.add(light);
+    }
+
+    function initMesh() {
+        var geometry = new THREE.CubeGeometry(200, 100, 50, 4, 4);
+        var material = new THREE.MeshLambertMaterial({color: 0xff0000});
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.position = new THREE.Vector3(0, 0, 0);
+        scene.add(mesh);
+    }
+
+    function createUI() {
+        var ParamObj = function () {
+            this.fov = 45;
+            this.lightX = 130;
+            this.lightY = 150;
+            this.lightZ = 170;
+        };
+        param = new ParamObj();
+        var gui = new dat.GUI();
+        gui.add(param, 'fov', 0, 100).name('视角的大小');
+        gui.add(param, 'lightX', 0, 255).name('光源x座标');
+        gui.add(param, 'lightY', 0, 255).name('光源y座标');
+        gui.add(param, 'lightZ', 0, 255).name('光源z座标');
+    }
+
+    function render(isAnimation) {
+        renderer.clear();
+        //mesh.rotation.y += 0.1;
+        camera.fov = param.fov;
+        camera.updateProjectionMatrix();
+        light.position.x = param.lightX;
+        light.position.y = param.lightY;
+        light.position.z = param.lightZ;
+        console.log(light);
+        isAnimation && requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+
+    function start() {
+        initRenderer();
+        initCamera();
+        initScene();
+        initLight();
+        initMesh();
+        createUI();
+        render(true);
+    }
+
+    window.onload = function () {
+        if (WEBGL.isWebGLAvailable()) {
+            start();
+        } else {
+            document.write('浏览器不支持WebGL');
+        }
+    }
+
+</script>
+</body>
+</html>
