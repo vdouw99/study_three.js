@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>图片纹理-TextureLoader</title>
+    <title>纹理重复的次数和方式</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
+    <script src="../public/js/dat.gui.js"></script>
     <style>
         #canvas-frame {
             width: 80%;
@@ -15,22 +16,20 @@
 </head>
 <body>
 <div id="canvas-frame"></div>
-<p>TextureLoader加载图片的时候，注意图片的尺寸。</p>
 <script>
     var renderer;
     var camera;
     var scene;
     var light;
     var mesh;
+    var params;
     var texture;
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
 
     function initRenderer() {
-        renderer = new THREE.WebGLRenderer({  //渲染器
-            antialias: true  //更平滑，锯齿不明显
-        });
+        renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setClearColor('#ffffff');
         renderer.setSize(width, height);
         container.appendChild(renderer.domElement);
@@ -38,14 +37,13 @@
 
     function initCamera() {
         camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-        //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
-        camera.position.x = 0;  //视觉距离
+        camera.position.x = 0;
         camera.position.y = 0;
         camera.position.z = 5;
-        camera.up.x = 0;  //仰视
-        camera.up.y = 0;  //正视  //camera.up.set(0, 1, 0);
-        camera.up.z = 0;  //俯视
-        camera.lookAt(0, 0, 0);  //相机望向某处
+        camera.up.x = 0;
+        camera.up.y = 1;
+        camera.up.z = 0;
+        camera.lookAt(0, 0, 1);
     }
 
     function initScene() {
@@ -77,14 +75,39 @@
         });
     }
 
+    function createUI() {
+        var paramsObj = function () {
+            this.repeat = 3;
+            this.wrap = 1;
+        };
+        params = new paramsObj();
+        var gui = new dat.GUI();
+        gui.add(params, 'repeat', -5, 15).name('纹理重复的次数');
+        gui.add(params, "wrap", 1, 3).name("纹理重复的方式").step(1);
+    }
+
     function render(isAnimation) {
         renderer.clear();
-        mesh.rotation.y += 0.1;
+        texture.repeat.x = texture.repeat.y = params.repeat;
+        switch (params.wrap) {
+            case 1:
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;  //纹理重复
+                break;
+            case 2:
+                texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;  //边缘拉伸
+                break;
+            case 3:
+                texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;  //镜像
+                break;
+        }
+        texture.needsUpdate = true;
+        mesh.rotation.y += 0.002;
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
 
     function start() {
+        createUI();
         initRenderer();
         initCamera();
         initScene();

@@ -79,7 +79,7 @@
     function render(isAnimation) {
         renderer.clear();
         mesh.rotation.y += 0.05;  //改变物体的位置
-        camera.fov = param.fov;
+        camera.fov = params.fov;
         camera.updateProjectionMatrix();
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);

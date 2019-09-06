@@ -23,7 +23,7 @@
     var scene;
     var light;
     var mesh;
-    var param;
+    var params;
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
@@ -56,7 +56,7 @@
 
     function initLight() {
         light = new THREE.DirectionalLight(0xffffff, 1.0, 0);  //平行光
-        light.position.set(param.lightX, param.lightY, param.lightZ);
+        light.position.set(params.lightX, params.lightY, params.lightZ);
         scene.add(light);
     }
 
@@ -69,26 +69,26 @@
     }
 
     function createUI() {
-        var ParamObj = function () {
+        var paramsObj = function () {
             this.fov = 45;
             this.lightX = 130;
             this.lightY = 150;
             this.lightZ = 170;
         };
-        param = new ParamObj();
+        params = new paramsObj();
         var gui = new dat.GUI();
-        gui.add(param, 'fov', 0, 100).name('视角的大小');
-        gui.add(param, 'lightX', 0, 255).name('光源x座标');
-        gui.add(param, 'lightY', 0, 255).name('光源y座标');
-        gui.add(param, 'lightZ', 0, 255).name('光源z座标');
+        gui.add(params, 'fov', 0, 100).name('视角的大小');
+        gui.add(params, 'lightX', 0, 255).name('光源x座标');
+        gui.add(params, 'lightY', 0, 255).name('光源y座标');
+        gui.add(params, 'lightZ', 0, 255).name('光源z座标');
     }
 
     function render(isAnimation) {
         renderer.clear();
         //mesh.rotation.y += 0.1;
-        camera.fov = param.fov;
+        camera.fov = params.fov;
         camera.updateProjectionMatrix();
-        light.position.set(param.lightX, param.lightY, param.lightZ);
+        light.position.set(params.lightX, params.lightY, params.lightZ);
         //console.log(light);
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
