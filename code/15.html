@@ -4,19 +4,48 @@
     <meta charset="UTF-8">
     <title>点光源-PointLight</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="../public/css/spectrum.css"/>
+    <script src="../public/js/jquery.js"></script>
+    <script src="../public/js/spectrum.js"></script>
+
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
     <script src="../public/js/dat.gui.js"></script>
+
     <style>
         #canvas-frame {
             width: 100%;
             height: 100%;
         }
+
+        .full-spectrum {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+        }
     </style>
 </head>
 <body>
 <div id="canvas-frame"></div>
+<input type="text" id="spectrum"/>
+<script>
+    $(function () {
+        $("#spectrum").spectrum({
+            color: "#f00",
+            preferredFormat: 'hex',
+            showInput: true,
+            className: 'full-spectrum',
+            showInital: true,
+            showPalette: true,
+            showSelectionPalette: true,
+            hide: function (tinycolor) {
+                console.log(tinycolor);
+                light.color.setHex('0x' + tinycolor.toHex())
+            }
+        });
+    })
 
+</script>
 <script>
     var renderer;
     var camera;
@@ -119,7 +148,7 @@
         } else {
             document.write('浏览器不支持WebGL');
         }
-    }
+    };
 
 </script>
 </body>
