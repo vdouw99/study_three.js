@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>平行光（方向光）DirectionalLight</title>
+    <title>点光源-PointLight</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
@@ -55,8 +55,9 @@
     }
 
     function initLight() {
-        light = new THREE.DirectionalLight(0xffffff, 1.0, 0);  //平行光
+        light = new THREE.PointLight(0xffff00, 1, 1000, 0.5);  //点光源
         light.position.set(param.lightX, param.lightY, param.lightZ);
+        light.decay = param.decay;
         scene.add(light);
     }
 
@@ -71,16 +72,20 @@
     function createUI() {
         var ParamObj = function () {
             this.fov = 45;
-            this.lightX = 130;
-            this.lightY = 150;
-            this.lightZ = 170;
+            this.intensity = 1;
+            this.lightX = 124;
+            this.lightY = -6;
+            this.lightZ = 81;
+            this.decay = 1;
         };
         param = new ParamObj();
         var gui = new dat.GUI();
         gui.add(param, 'fov', 0, 100).name('视角的大小');
-        gui.add(param, 'lightX', 0, 255).name('光源x座标');
-        gui.add(param, 'lightY', 0, 255).name('光源y座标');
-        gui.add(param, 'lightZ', 0, 255).name('光源z座标');
+        gui.add(param, 'intensity', 0, 1).name('光的强度');
+        gui.add(param, 'lightX', -2000, 2000).name('光源x座标');
+        gui.add(param, 'lightY', -2000, 2000).name('光源y座标');
+        gui.add(param, 'lightZ', -2000, 2000).name('光源z座标');
+        gui.add(param, 'decay', 0, 1).name('光的衰退量decay');
     }
 
     function render(isAnimation) {
@@ -88,7 +93,11 @@
         //mesh.rotation.y += 0.1;
         camera.fov = param.fov;
         camera.updateProjectionMatrix();
-        light.position.set(param.lightX, param.lightY, param.lightZ);
+        light.intensity = param.intensity;
+        light.position.x = param.lightX;
+        light.position.y = param.lightY;
+        light.position.z = param.lightZ;
+        light.decay = param.decay;
         //console.log(light);
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
