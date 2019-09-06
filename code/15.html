@@ -84,7 +84,7 @@
     }
 
     function initLight() {
-        light = new THREE.PointLight(0xffff00, 1, 1000, 0.5);  //点光源
+        light = new THREE.PointLight(0xffffff, 1, 2000, 0.5);  //点光源
         light.position.set(param.lightX, param.lightY, param.lightZ);
         light.decay = param.decay;
         scene.add(light);
@@ -102,9 +102,9 @@
         var ParamObj = function () {
             this.fov = 45;
             this.intensity = 1;
-            this.lightX = 124;
+            this.lightX = 168;
             this.lightY = -6;
-            this.lightZ = 81;
+            this.lightZ = 124;
             this.decay = 1;
         };
         param = new ParamObj();
