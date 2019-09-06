@@ -29,7 +29,8 @@ dat.gui.js用于创建菜单栏，可以用来控制场景中的各个参数来�
 stats.js用于对JavaScript进行性能检测。
 https://blog.csdn.net/u014658748/article/details/51780727
 
-
+JavaScript Colorpicker 
+https://github.com/bgrins/spectrum
 
 The goal of this section is to give a brief introduction to three.js. We will start by setting up a scene, with a spinning cube. A working example is provided at the bottom of the page in case you get stuck and need help.
 

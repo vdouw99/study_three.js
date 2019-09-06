@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>五彩的光源-1-平行光（方向光）</title>
+    <title>光源1-平行光（方向光）DirectionalLight</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
@@ -23,6 +23,7 @@
     var scene;
     var light;
     var mesh;
+    var param;
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
@@ -54,7 +55,7 @@
     }
 
     function initLight() {
-        light = new THREE.AmbientLight(0xffffff, 1.0, 0);  //环境光
+        light = new THREE.DirectionalLight(0xffffff, 1.0, 0);  //平行光
         light.position.set(param.lightX, param.lightY, param.lightZ);
         scene.add(light);
     }

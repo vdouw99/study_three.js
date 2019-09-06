@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>五彩的光源-2-环境光</title>
+    <title>光源2-环境光-AmbientLight</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
@@ -23,6 +23,7 @@
     var scene;
     var light;
     var mesh;
+    var param;
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
@@ -55,7 +56,7 @@
 
     function initLight() {
         console.log('没有任何光的时候，物体都是黑色的');
-        light = new THREE.DirectionalLight(0xffffff, 1.0, 0);  //环境光
+        light = new THREE.AmbientLight(0xffffff, param.intensity);  //环境光
         console.log('改变环境光的位置，对物体有影响吗？没有！');
         light.position.set(param.lightX, param.lightY, param.lightZ);
         scene.add(light);
@@ -72,16 +73,12 @@
     function createUI() {
         var ParamObj = function () {
             this.fov = 45;
-            this.lightX = 130;
-            this.lightY = 150;
-            this.lightZ = 170;
+            this.intensity = 1;
         };
         param = new ParamObj();
         var gui = new dat.GUI();
         gui.add(param, 'fov', 0, 100).name('视角的大小');
-        gui.add(param, 'lightX', 0, 255).name('光源x座标');
-        gui.add(param, 'lightY', 0, 255).name('光源y座标');
-        gui.add(param, 'lightZ', 0, 255).name('光源z座标');
+        gui.add(param, 'intensity', 0, 1).name('环境光的强度');
     }
 
     function render(isAnimation) {
@@ -89,9 +86,7 @@
         //mesh.rotation.y += 0.1;
         camera.fov = param.fov;
         camera.updateProjectionMatrix();
-        light.position.x = param.lightX;
-        light.position.y = param.lightY;
-        light.position.z = param.lightZ;
+        light.intensity = param.intensity;
         //console.log(light);
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
