@@ -32,6 +32,10 @@ https://blog.csdn.net/u014658748/article/details/51780727
 JavaScript Colorpicker 
 https://github.com/bgrins/spectrum
 
+模型查看器
+https://www.blender.org/
+链接: https://pan.baidu.com/s/1lOl8qNmYYQdR_yuAPPDWhQ 提取码: m7s6
+
 The goal of this section is to give a brief introduction to three.js. We will start by setting up a scene, with a spinning cube. A working example is provided at the bottom of the page in case you get stuck and need help.
 
 网易云课堂 章节
