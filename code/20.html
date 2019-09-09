@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>每个平面都是由3个点构成</title>
+    <title>自定义绘制（彩色三角形）</title>
     <link type="text/css" rel="stylesheet" href="../public/css/index.css"/>
     <script src="../public/js/webgl.js"></script>
     <script src="../public/js/three.js"></script>
@@ -22,7 +22,6 @@
     var scene;
     var light;
     var mesh;
-    var geometry;
     var container = document.getElementById('canvas-frame');
     var width = container.clientWidth;
     var height = container.clientHeight;
@@ -38,29 +37,29 @@
 
     function initCamera() {
         camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-        camera.position.x = 0;
+        //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
+        camera.position.x = 0;  //视觉距离
         camera.position.y = 0;
-        camera.position.z = 200;
-        camera.up.x = 0;
-        camera.up.y = 1;
-        camera.up.z = 0;
+        camera.position.z = 300;
+        camera.up.x = 0;  //仰视
+        camera.up.y = 1;  //正视  //camera.up.set(0, 1, 0);
+        camera.up.z = 0;  //俯视
         camera.lookAt(0, 0, 1);  //相机望向某处
     }
 
     function initScene() {
         scene = new THREE.Scene();
-        scene.add(new THREE.AxesHelper(150));
+        scene.add(new THREE.AxesHelper(4));  //辅助座标线
     }
 
     function initLight() {
-        light = new THREE.DirectionalLight(0xffffff, 1.0, 0);
+        light = new THREE.DirectionalLight(0xFFFFFF, 1.0, 0);
         light.position.set(100, 100, 200);
         scene.add(light);
     }
 
     function initMesh() {
-        geometry = new THREE.PlaneGeometry(100, 100, 2, 2);
-        console.log(geometry);
+        geometry = new THREE.Geometry();
         var material = new THREE.MeshBasicMaterial({
             vertexColors: THREE.VertexColors,
             //color: 0xff0000,
@@ -69,19 +68,24 @@
         var color1 = new THREE.Color(0xff0000);
         var color2 = new THREE.Color(0x00ff00);
         var color3 = new THREE.Color(0x0000ff);
-        for (var i = 0; i < geometry.faces.length; i++) {
-            var f = geometry.faces[i];
-            f.vertexColors[0] = color1;
-            f.vertexColors[1] = color2;
-            f.vertexColors[2] = color3;
-        }
+        var p1 = new THREE.Vector3(100, 0, 0);
+        var p2 = new THREE.Vector3(0, 100, 0);
+        var p3 = new THREE.Vector3(-100, 0, 0);
+        geometry.vertices.push(p1);
+        geometry.vertices.push(p2);
+        geometry.vertices.push(p3);
+        var face = new THREE.Face3(0, 1, 2);
+        face.vertexColors[0] = color1;
+        face.vertexColors[1] = color2;
+        face.vertexColors[2] = color3;
+        geometry.faces.push(face);
         mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
     }
 
     function render(isAnimation) {
         renderer.clear();
-        mesh.rotation.y += 0.01;
+        mesh.rotation.y += 0.1;
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
