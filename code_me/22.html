@@ -38,10 +38,10 @@
     }
 
     function initCamera() {
-        camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
+        camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 5000);
         camera.position.x = 0;
         camera.position.y = 0;
-        camera.position.z = 2005;
+        camera.position.z = 3000;
         camera.up.x = 0;
         camera.up.y = 1;
         camera.up.z = 0;
@@ -50,19 +50,24 @@
 
     function initScene() {
         scene = new THREE.Scene();
-        scene.add(new THREE.AxesHelper(4));
+        scene.add(new THREE.AxesHelper(1000));
     }
 
     function initLight() {
-        light = new THREE.DirectionalLight(0xFFFFFF, 1.0, 0);
-        light.position.set(100, 100, 200);
+        light = new THREE.DirectionalLight(0x000000, 0.5);
+        light.position.set(0, 1, 0);
         scene.add(light);
     }
 
     function initMesh(callback) {
+        var material = new THREE.MeshBasicMaterial({
+            //vertexColors: THREE.FaceColors,
+            color: 0xff0000,
+            wireframe: true
+        });
         var loader = new THREE.PLYLoader();
         loader.load('./public/modules/Lucy100k.ply', function (geometry) {
-            var material = new THREE.MeshBasicMaterial({color: 0xFF0000});
+            geometry.computeVertexNormals();
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
             callback && callback();
@@ -71,7 +76,7 @@
 
     function render(isAnimation) {
         renderer.clear();
-        // mesh.rotation.y += 0.1;
+        mesh.rotation.y += 0.005;
         isAnimation && requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
@@ -82,7 +87,7 @@
         initScene();
         initLight();
         initMesh(function () {
-            render();
+            render(true);
         });
     }
 
