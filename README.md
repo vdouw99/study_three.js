@@ -36,6 +36,15 @@ https://github.com/bgrins/spectrum
 https://www.blender.org/
 链接: https://pan.baidu.com/s/1lOl8qNmYYQdR_yuAPPDWhQ 提取码: m7s6
 
+Three.js的360度全景图预览插件-(Photo-Sphere-Viewer)
+http://resource.haorooms.com/softshow-29-167-1.html
+
+three.js 实现全景图360°
+https://blog.csdn.net/xiao_a_gang/article/details/81741039
+
+Three.js - 通过 CSS3DRenderer 实现全景浏览
+https://blog.csdn.net/ithanmang/article/details/82013276
+
 The goal of this section is to give a brief introduction to three.js. We will start by setting up a scene, with a spinning cube. A working example is provided at the bottom of the page in case you get stuck and need help.
 
 网易云课堂 章节
