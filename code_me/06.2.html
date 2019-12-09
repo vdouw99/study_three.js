@@ -1,117 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>H5补间动画库Tween.js</title>
-    <link type="text/css" rel="stylesheet" href="./public/css/index.css"/>
-    <script src="./public/js/webgl.js"></script>
-    <script src="./public/js/three.js"></script>
-    <script src="./public/js/stats.js"></script>
-    <script src="./public/js/Tween.js"></script>
-    <style>
-        #canvas-frame {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>H5补间动画库Tween.js</title>
+  <link type="text/css" rel="stylesheet" href="./public/css/index.css"/>
+  <script src="./public/js/webgl.js"></script>
+  <script src="./public/js/three.js"></script>
+  <script src="./public/js/stats.js"></script>
+  <script src="./public/js/Tween.js"></script>
+  <style>
+    #canvas-frame {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 <body>
 <div id="canvas-frame"></div>
 
 <script>
-    var renderer;
-    var camera;
-    var scene;
-    var light;
-    var mesh;
-    var stats = initStats();
-    var container = document.getElementById('canvas-frame');
-    var width = container.clientWidth;
-    var height = container.clientHeight;
+  var renderer;
+  var camera;
+  var scene;
+  var light;
+  var mesh;
+  var stats = initStats();
+  var container = document.getElementById('canvas-frame');
+  var width = container.clientWidth;
+  var height = container.clientHeight;
 
-    function initRenderer() {
-        renderer = new THREE.WebGLRenderer({  //渲染器
-            antialias: true  //更平滑，锯齿不明显
-        });
-        renderer.setClearColor('#ffffff');
-        renderer.setSize(width, height);
-        container.appendChild(renderer.domElement);
-    }
+  function initRenderer() {
+    renderer = new THREE.WebGLRenderer({  //渲染器
+      antialias: true  //更平滑，锯齿不明显
+    });
+    renderer.setClearColor('#ffffff');
+    renderer.setSize(width, height);
+    container.appendChild(renderer.domElement);
+  }
 
-    function initCamera() {
-        camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-        //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
-        camera.position.x = 0;  //视觉距离
-        camera.position.y = 0;
-        camera.position.z = 5;
-        camera.up.x = 0;  //仰视
-        camera.up.y = 0;  //正视  //camera.up.set(0, 1, 0);
-        camera.up.z = 0;  //俯视
-        camera.lookAt(0, 0, 0);  //相机望向某处
-    }
+  function initCamera() {
+    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
+    //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
+    camera.position.x = 0;  //视觉距离
+    camera.position.y = 0;
+    camera.position.z = 5;
+    camera.up.x = 0;  //仰视
+    camera.up.y = 0;  //正视  //camera.up.set(0, 1, 0);
+    camera.up.z = 0;  //俯视
+    camera.lookAt(0, 0, 0);  //相机望向某处
+  }
 
-    function initScene() {
-        scene = new THREE.Scene();
-        scene.add(new THREE.AxesHelper(4));  //辅助座标线
-    }
+  function initScene() {
+    scene = new THREE.Scene();
+    scene.add(new THREE.AxesHelper(4));  //辅助座标线
+  }
 
-    function initLight() {
-        light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
-        light.position.set(100, 100, 200);
-        scene.add(light);
-    }
+  function initLight() {
+    light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
+    light.position.set(100, 100, 200);
+    scene.add(light);
+  }
 
-    function initMesh() {
-        var geometry = new THREE.BoxGeometry(2, 2, 2);  //添加物体到场景中（2米的立方体）
-        var material = new THREE.MeshBasicMaterial({color: 0xFF0000});  //定义材质
-        mesh = new THREE.Mesh(geometry, material);  //网格
-        scene.add(mesh);
-    }
+  function initMesh() {
+    var geometry = new THREE.BoxGeometry(2, 2, 2);  //添加物体到场景中（2米的立方体）
+    var material = new THREE.MeshBasicMaterial({color: 0xFF0000});  //定义材质
+    mesh = new THREE.Mesh(geometry, material);  //网格
+    scene.add(mesh);
+  }
 
-    function render(isAnimation) {
-        stats.begin();
-        renderer.clear();
-        mesh.rotation.y += 0.1;  //改变物体的位置
-        //camera.position.x += 0.1;  //相机动起来，也可以实现动画
-        isAnimation && requestAnimationFrame(render);  //实现循环，刷新频率来自电脑本身，更流畅
-        renderer.render(scene, camera);
-        TWEEN.update();
-        stats.end();
-    }
+  function render(isAnimation) {
+    stats.begin();
+    renderer.clear();
+    mesh.rotation.y += 0.1;  //改变物体的位置
+    //camera.position.x += 0.1;  //相机动起来，也可以实现动画
+    isAnimation && requestAnimationFrame(render);  //实现循环，刷新频率来自电脑本身，更流畅
+    renderer.render(scene, camera);
+    TWEEN.update();
+    stats.end();
+  }
 
-    //初始化统计对象
-    function initStats() {
-        var stats = new Stats();
-        stats.setMode(0); // 0: fps, 1: ms
-        stats.domElement.style.position = 'fixed';
-        stats.domElement.style.right = '0';
-        stats.domElement.style.bottom = '0';
-        document.body.appendChild(stats.domElement);
-        return stats;
-    }
+  //初始化统计对象
+  function initStats() {
+    var stats = new Stats();
+    stats.setMode(0); // 0: fps, 1: ms
+    stats.domElement.style.position = 'fixed';
+    stats.domElement.style.right = '0';
+    stats.domElement.style.bottom = '0';
+    document.body.appendChild(stats.domElement);
+    return stats;
+  }
 
-    function initTween() {
-        new TWEEN.Tween(camera.position).to({x: 1}, 3000).repeat(Infinity).start();
-    }
+  function initTween() {
+    new TWEEN.Tween(camera.position).to({x: 1}, 3000).repeat(Infinity).start();
+  }
 
-    function start() {
-        initRenderer();
-        initCamera();
-        initScene();
-        initLight();
-        initMesh();
-        initTween();
-        render(true);  //动画方式1
-        //setInterval(render, 50);  //动画方式2，自定义设置刷新频率
-    }
+  function start() {
+    initRenderer();
+    initCamera();
+    initScene();
+    initLight();
+    initMesh();
+    initTween();
+    render(true);  //动画方式1
+    //setInterval(render, 50);  //动画方式2，自定义设置刷新频率
+  }
 
-    window.onload = function () {
-        if (WEBGL.isWebGLAvailable()) {
-            start();
-        } else {
-            document.write('浏览器不支持WebGL');
-        }
+  window.onload = function () {
+    if (WEBGL.isWebGLAvailable()) {
+      start();
+    } else {
+      document.write('浏览器不支持WebGL');
     }
+  }
 
 </script>
 </body>

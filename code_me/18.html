@@ -1,129 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>纹理重复的次数和方式</title>
-    <link type="text/css" rel="stylesheet" href="./public/css/index.css"/>
-    <script src="./public/js/webgl.js"></script>
-    <script src="./public/js/three.js"></script>
-    <script src="./public/js/dat.gui.js"></script>
-    <style>
-        #canvas-frame {
-            width: 80%;
-            height: 80%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>纹理重复的次数和方式</title>
+  <link type="text/css" rel="stylesheet" href="./public/css/index.css"/>
+  <script src="./public/js/webgl.js"></script>
+  <script src="./public/js/three.js"></script>
+  <script src="./public/js/dat.gui.js"></script>
+  <style>
+    #canvas-frame {
+      width: 80%;
+      height: 80%;
+    }
+  </style>
 </head>
 <body>
 <div id="canvas-frame"></div>
 <script>
-    var renderer;
-    var camera;
-    var scene;
-    var light;
-    var mesh;
-    var params;
-    var texture;
-    var container = document.getElementById('canvas-frame');
-    var width = container.clientWidth;
-    var height = container.clientHeight;
+  var renderer;
+  var camera;
+  var scene;
+  var light;
+  var mesh;
+  var params;
+  var texture;
+  var container = document.getElementById('canvas-frame');
+  var width = container.clientWidth;
+  var height = container.clientHeight;
 
-    function initRenderer() {
-        renderer = new THREE.WebGLRenderer({antialias: true});
-        renderer.setClearColor('#ffffff');
-        renderer.setSize(width, height);
-        container.appendChild(renderer.domElement);
-    }
+  function initRenderer() {
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setClearColor('#ffffff');
+    renderer.setSize(width, height);
+    container.appendChild(renderer.domElement);
+  }
 
-    function initCamera() {
-        camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
-        camera.position.x = 0;
-        camera.position.y = 0;
-        camera.position.z = 5;
-        camera.up.x = 0;
-        camera.up.y = 1;
-        camera.up.z = 0;
-        camera.lookAt(0, 0, 1);
-    }
+  function initCamera() {
+    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 5;
+    camera.up.x = 0;
+    camera.up.y = 1;
+    camera.up.z = 0;
+    camera.lookAt(0, 0, 1);
+  }
 
-    function initScene() {
-        scene = new THREE.Scene();
-        scene.add(new THREE.AxesHelper(4));  //辅助座标线
-    }
+  function initScene() {
+    scene = new THREE.Scene();
+    scene.add(new THREE.AxesHelper(4));  //辅助座标线
+  }
 
-    function initLight() {
-        light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
-        light.position.set(100, 100, 200);
-        scene.add(light);
-    }
+  function initLight() {
+    light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
+    light.position.set(100, 100, 200);
+    scene.add(light);
+  }
 
-    function initMesh(callback) {
-        var geometry = new THREE.PlaneGeometry(2, 2, 2, 2);
-        var loader = new THREE.TextureLoader();
-        texture = loader.load('../public/images/girl.jpg', function (res) {
-            var material = new THREE.MeshBasicMaterial({
-                map: res
-            });
-            mesh = new THREE.Mesh(geometry, material);
-            callback && callback();
-            scene.add(mesh);
-        }, function (xhr) {
-            console.log(xhr);
-        }, function (err) {
-            console.log(err);
-            console.error('An error happened.');
-        });
-    }
+  function initMesh(callback) {
+    var geometry = new THREE.PlaneGeometry(2, 2, 2, 2);
+    var loader = new THREE.TextureLoader();
+    texture = loader.load('../public/images/girl.jpg', function (res) {
+      //console.log('如果WebStorm环境报错，在PHP环境中运行试试');
+      var material = new THREE.MeshBasicMaterial({
+        map: res
+      });
+      mesh = new THREE.Mesh(geometry, material);
+      callback && callback();
+      scene.add(mesh);
+    }, function (xhr) {
+      console.log(xhr);
+    }, function (err) {
+      console.log(err);
+      console.error('An error happened.');
+    });
+  }
 
-    function createUI() {
-        var paramsObj = function () {
-            this.repeat = 3;
-            this.wrap = 1;
-        };
-        params = new paramsObj();
-        var gui = new dat.GUI();
-        gui.add(params, 'repeat', -5, 15).name('纹理重复的次数');
-        gui.add(params, "wrap", 1, 3).name("纹理重复的方式").step(1);
-    }
+  function createUI() {
+    var paramsObj = function () {
+      this.repeat = 3;
+      this.wrap = 1;
+    };
+    params = new paramsObj();
+    var gui = new dat.GUI();
+    gui.add(params, 'repeat', -5, 15).name('纹理重复的次数');
+    gui.add(params, "wrap", 1, 3).name("纹理重复的方式").step(1);
+  }
 
-    function render(isAnimation) {
-        renderer.clear();
-        texture.repeat.x = texture.repeat.y = params.repeat;
-        switch (params.wrap) {
-            case 1:
-                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;  //纹理重复
-                break;
-            case 2:
-                texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;  //边缘拉伸
-                break;
-            case 3:
-                texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;  //镜像
-                break;
-        }
-        texture.needsUpdate = true;
-        mesh.rotation.y += 0.002;
-        isAnimation && requestAnimationFrame(render);
-        renderer.render(scene, camera);
+  function render(isAnimation) {
+    renderer.clear();
+    texture.repeat.x = texture.repeat.y = params.repeat;
+    switch (params.wrap) {
+      case 1:
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;  //纹理重复
+        break;
+      case 2:
+        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;  //边缘拉伸
+        break;
+      case 3:
+        texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;  //镜像
+        break;
     }
+    texture.needsUpdate = true;
+    mesh.rotation.y += 0.01;
+    isAnimation && requestAnimationFrame(render);
+    renderer.render(scene, camera);
+  }
 
-    function start() {
-        createUI();
-        initRenderer();
-        initCamera();
-        initScene();
-        initLight();
-        initMesh(function () {
-            render(true);
-        });
-    }
+  function start() {
+    createUI();
+    initRenderer();
+    initCamera();
+    initScene();
+    initLight();
+    initMesh(function () {
+      render(true);
+    });
+  }
 
-    window.onload = function () {
-        if (WEBGL.isWebGLAvailable()) {
-            start();
-        } else {
-            document.write('浏览器不支持WebGL');
-        }
+  window.onload = function () {
+    if (WEBGL.isWebGLAvailable()) {
+      start();
+    } else {
+      document.write('浏览器不支持WebGL');
     }
+  }
 
 </script>
 </body>
