@@ -13,7 +13,7 @@
 </head>
 <body>
 <!--https://blog.csdn.net/ithanmang/article/details/82013276-->
-<script src="../code_me/public/js/three.js"></script>
+<script src="./three.min.js"></script>
 <script src="./CSS3DRenderer.js"></script>
 
 <script>
@@ -45,10 +45,8 @@
 
   /* 图片加载完之后调用 */
   img.onload = function () {
-
     init(img.width, src);
     animate();
-
   };
 
   function init(width, imageSrc) {
