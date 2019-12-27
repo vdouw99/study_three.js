@@ -23,7 +23,7 @@
   var scene;
   var light;
   var mesh;
-  var param;
+  var params;
   var container = document.getElementById('canvas-frame');
   var width = container.clientWidth;
   var height = container.clientHeight;
@@ -71,9 +71,9 @@
     var ParamObj = function () {
       this.fov = 45;
     };
-    param = new ParamObj();
+    params = new ParamObj();
     var gui = new dat.GUI();
-    gui.add(param, 'fov', 0, 100).name('视角的大小');
+    gui.add(params, 'fov', 0, 100).name('视角的大小');
   }
 
   function render(isAnimation) {

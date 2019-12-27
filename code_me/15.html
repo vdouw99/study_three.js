@@ -51,7 +51,7 @@
   var scene;
   var light;
   var mesh;
-  var param;
+  var params;
   var container = document.getElementById('canvas-frame');
   var width = container.clientWidth;
   var height = container.clientHeight;
@@ -84,8 +84,8 @@
 
   function initLight() {
     light = new THREE.PointLight(0xffffff, 1, 2000, 0.5);  //点光源
-    light.position.set(param.lightX, param.lightY, param.lightZ);
-    light.decay = param.decay;
+    light.position.set(params.lightX, params.lightY, params.lightZ);
+    light.decay = params.decay;
     scene.add(light);
   }
 
@@ -119,13 +119,13 @@
   function render(isAnimation) {
     renderer.clear();
     //mesh.rotation.y += 0.1;
-    camera.fov = param.fov;
+    camera.fov = params.fov;
     camera.updateProjectionMatrix();
-    light.intensity = param.intensity;
-    light.position.x = param.lightX;
-    light.position.y = param.lightY;
-    light.position.z = param.lightZ;
-    light.decay = param.decay;
+    light.intensity = params.intensity;
+    light.position.x = params.lightX;
+    light.position.y = params.lightY;
+    light.position.z = params.lightZ;
+    light.decay = params.decay;
     //console.log(light);
     isAnimation && requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -133,12 +133,14 @@
 
   function start() {
     createUI();
-    initRenderer();
-    initCamera();
-    initScene();
-    initLight();
-    initMesh();
-    render(true);
+    setTimeout(function () {
+      initRenderer();
+      initCamera();
+      initScene();
+      initLight();
+      initMesh();
+      render(true);
+    }, 100);
   }
 
   window.onload = function () {
