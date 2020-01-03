@@ -53,21 +53,60 @@
 
   function initLight() {
     light = new THREE.PointLight(0xffffff, 1, 2000, 0.5);  //点光源
-    light.position.set(14,4,4);
+    light.position.set(14, 4, 4);
     light.decay = 3;
     scene.add(light);
   }
 
   function initMesh() {
-    var geometry = new THREE.BoxGeometry(2, 2, 2);
-    var material = new THREE.MeshBasicMaterial({color: 0xff0000});
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    var triangles = 16;
+    var geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(triangles * 3 * 3);  //每个三角形有3个点，每个点有x,y,z
+    var normals = new Float32Array(triangles * 3 * 3);  //法线，每个点对应一个法线
+    var colors = new Float32Array(triangles * 3 * 3);  //每个点对应一个颜色
+    var n = 800;  //正方体的长
+    var n2 = 400;
+    var d = 12;  //三角形的边长
+    var d2 = 6;
+    var pA = new THREE.Vector3();
+    var pB = new THREE.Vector3();
+    var pC = new THREE.Vector3();
+    var cb = new THREE.Vector3();
+    var ab = new THREE.Vector3();
+    for (var i = 0; i < positions.length; i++) {
+      var x = Math.random() * n - n2;  // 正方体中随机产生一个点的x座标
+      var y = Math.random() * n - n2;  // -400到400的随机数
+      var z = Math.random() * n - n2;
+      var ax = x + Math.random() * d - d2;  // 依据随机点产生一个三角形
+      var ay = y + Math.random() * d - d2;
+      var az = z + Math.random() * d - d2;
+      var bx = x + Math.random() * d - d2;
+      var by = y + Math.random() * d - d2;
+      var bz = z + Math.random() * d - d2;
+      var cx = x + Math.random() * d - d2;
+      var cy = y + Math.random() * d - d2;
+      var cz = z + Math.random() * d - d2;
+      positions[i] = ax;      // 把三角形的第一个点的x座标放入数组
+      positions[i + 1] = ay;
+      positions[i + 2] = az;
+      positions[i + 3] = bx;
+      positions[i + 4] = by;
+      positions[i + 5] = bz;
+      positions[i + 6] = cx;
+      positions[i + 7] = cy;
+      positions[i + 8] = cz;
+      pA.set(ax, ay, az);
+      pB.set(bx, by, bz);
+      pC.set(cx, cy, cz);
+// 向量的加法：将各个向量依次首尾相接，结果为第一个向量的起点指向最后一个向量的终点。
+// 向量的减法：将两个向量平移到公共起点，结果由减向量的终点指向被减向量的起点。
+      cb.subVectors(pC, pB);  //向量的减法
+      ab.subVectors(pA, pB);  // 20minute
+    }
   }
 
   function render() {
     renderer.clear();
-    mesh.rotation.y += 0.1;
     requestAnimationFrame(render);
     renderer.render(scene, camera);
   }
