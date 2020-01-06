@@ -29,17 +29,17 @@
   var width = container.clientWidth;
   var height = container.clientHeight;
   function initRenderer() {
-    renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setClearColor('#ffffff');
-    renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
+//    renderer = new THREE.WebGLRenderer({antialias: true});
+//    renderer.setClearColor('#ffffff');
+//    renderer.setSize(width, height);
+//    container.appendChild(renderer.domElement);
   }
   function initCamera() {
     camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 2000);
     //相机的视锥体的垂直视野角,相机视锥体的长宽比,相机视锥体的近平面,相机视锥体的远平面
     camera.position.x = 0;  //视觉距离
     camera.position.y = 0;
-    camera.position.z = 5;
+    camera.position.z = 2000;
     camera.up.x = 0;  //仰视
     camera.up.y = 1;  //正视  //camera.up.set(0, 1, 0);
     camera.up.z = 0;  //俯视
@@ -64,6 +64,7 @@
     var positions = new Float32Array(triangles * 3 * 3);  //每个三角形有3个点，每个点有x,y,z
     var normals = new Float32Array(triangles * 3 * 3);  //法线，每个点对应一个法线
     var colors = new Float32Array(triangles * 3 * 3);  //每个点对应一个颜色
+    var color = new THREE.Color();
     var n = 800;  //正方体的长
     var n2 = 400;
     var d = 12;  //三角形的边长
@@ -101,8 +102,53 @@
 // 向量的加法：将各个向量依次首尾相接，结果为第一个向量的起点指向最后一个向量的终点。
 // 向量的减法：将两个向量平移到公共起点，结果由减向量的终点指向被减向量的起点。
       cb.subVectors(pC, pB);  //向量的减法
-      ab.subVectors(pA, pB);  // 20minute
+      ab.subVectors(pA, pB);
+      cb.cross(ab);  //向量的正交向量cross
+      cb.normalize();  //向量的归一化，长度设为1
+      var nx = cb.x;
+      var ny = cb.y;
+      var nz = cb.z;
+      normals[i] = nx;
+      normals[i + 1] = ny;
+      normals[i + 2] = nz;
+      normals[i + 3] = nx;
+      normals[i + 4] = ny;
+      normals[i + 5] = nz;
+      normals[i + 6] = nx;
+      normals[i + 7] = ny;
+      normals[i + 8] = nz;
+      var vx = (x / n) + 0.5;  //0-1的随机数
+      var vy = (y / n) + 0.5;
+      var vz = (z / n) + 0.5;
+      color.setRGB(vx, vy, vz);
+      colors[i] = color.r;
+      colors[i + 1] = color.g;
+      colors[i + 2] = color.b;
+      colors[i + 3] = color.r;
+      colors[i + 4] = color.g;
+      colors[i + 5] = color.b;
+      colors[i + 6] = color.r;
+      colors[i + 7] = color.g;
+      colors[i + 8] = color.b;
     }
+    geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3));
+    geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.computeBoundingSphere();
+    var material = new THREE.MeshPhongMaterial({
+      color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
+      side: THREE.DoubleSide, vertexColors: THREE.VertexColors
+    });
+    mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+    renderer = new THREE.WebGLRenderer({antialias: false});
+    //renderer.setClearColor(scene.fod.color);
+    renderer.setClearColor('#ffffff');
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.gammaInput = true;
+    renderer.gammaOutput = true;
+    container.appendChild(renderer.domElement);
   }
 
   function render() {
