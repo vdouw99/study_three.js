@@ -62,7 +62,7 @@
   function initMesh(callback) {
     var geometry = new THREE.PlaneGeometry(2, 2, 2, 2);
     var loader = new THREE.TextureLoader();
-    texture = loader.load('../public/images/girl.jpg', function (res) {
+    texture = loader.load('/code_me/public/images/girl.jpg', function (res) {
       var material = new THREE.MeshBasicMaterial({
         map: res
       });
